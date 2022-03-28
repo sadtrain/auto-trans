@@ -1,10 +1,13 @@
 package com.sadtrain.autotrans.mirai.resolver;
 
+import com.alibaba.fastjson.JSON;
 import com.sadtrain.autotrans.api.SignMD5Util;
 import com.sadtrain.autotrans.api.TKLConvertor;
 import com.sadtrain.autotrans.api.response.DtkTwdToTwdResponse;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.message.MessageReceipt;
+import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.PlainText;
@@ -22,19 +25,19 @@ import java.util.regex.Pattern;
 
 @Component
 public class AssignMessageResolver {
-    private static Logger logger = LoggerFactory.getLogger(TKLConvertor.class);
+    private static Logger logger = LoggerFactory.getLogger(AssignMessageResolver.class);
     @Autowired
     private TKLConvertor tklConvertor;
 
-    public void resolve(MessageEvent event, Group dest){
+    public void resolve(MessageEvent event, Group dest) {
         MessageChain messageChain = event.getMessage();
         MessageChainBuilder newMassageBuilder = new MessageChainBuilder();
         for (SingleMessage message : messageChain) {
-            if (message instanceof PlainText){
+            if (message instanceof PlainText) {
                 String content = ((PlainText) message).getContent();
                 Pattern pattern = Pattern.compile("[\\s\\S]*(￥.*￥)[\\s\\S]*");
                 Matcher matcher = pattern.matcher(content);
-                if(matcher.matches()){
+                if (matcher.matches()) {
                     String tkl = matcher.group(1);
 //                        System.out.println(matcher.group(1));
                     String myTKL = tklConvertor.convert(tkl);
@@ -42,13 +45,12 @@ public class AssignMessageResolver {
                     content = content.replaceAll(tkl, myTKL);
                 }
                 newMassageBuilder.append(new PlainText(content));
-            }else{
+            } else if (message instanceof Image) {
                 newMassageBuilder.append(message);
             }
-
         }
         MessageChain newMessage = newMassageBuilder.build();
-        logger.info(newMessage.toString());
+        logger.info("prepare to send message：" + JSON.toJSONString(newMessage));
         dest.sendMessage(newMessage);
     }
 

@@ -28,14 +28,14 @@ public class MyBot implements LifeCycle {
         botConfiguration.setWorkingDir(new File(this.getClass().getClassLoader().getResource("").getPath()));
         botConfiguration.fileBasedDeviceInfo();
         //上线后需要关闭
-        botConfiguration.enableContactCache();
-        BotConfiguration.ContactListCache contactListCache = botConfiguration.getContactListCache();
-        contactListCache.setFriendListCacheEnabled(true); // 开启好友列表缓存
-        contactListCache.setGroupMemberListCacheEnabled(true); // 开启群成员列表缓存
+//        botConfiguration.enableContactCache();
+//        BotConfiguration.ContactListCache contactListCache = botConfiguration.getContactListCache();
+//        contactListCache.setFriendListCacheEnabled(true); // 开启好友列表缓存
+//        contactListCache.setGroupMemberListCacheEnabled(true); // 开启群成员列表缓存
 //        contactListCache.setSaveIntervalMillis(60000); // 可选设置有更新时的保存时间间隔, 默认 60 秒
 
         botConfiguration.setProtocol(BotConfiguration.MiraiProtocol.MACOS);
-        myBot = instance.newBot(myQQ, "$.sadtrain(503)", botConfiguration);
+        myBot = instance.newBot(myQQ, myPassword, botConfiguration);
         myBot.login();
         logger.info(myBot + "started!");
     }

@@ -66,7 +66,7 @@ public class MyGroupListener implements LifeCycle {
 //        Group finalMyGroup = myGroup;
 //        eventChannel.filter(botEvent -> )
         eventChannel.subscribeAlways(GroupMessageEvent.class, event -> {
-            logger.info("received a message from " + event.getGroup() + event);
+            logger.info("received a message from " + event.getGroup() + event.getSenderName());
             if(event.getGroup().getId() == myGroupId){
                 assignMessageResolver.resolve(event,sqkbGroup);
             }

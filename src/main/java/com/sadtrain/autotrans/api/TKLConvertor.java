@@ -34,7 +34,6 @@ public class TKLConvertor {
         paraMap.put("pid", "mm_50644486_2601550374_111953300012");
         paraMap.put("version","v1.0.0");
         String signStr = SignMD5Util.getSignStr(paraMap, appSecret);
-        System.out.println(signStr);
         paraMap.put("sign", signStr);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<BaseResponse<DtkTwdToTwdResponse>> forEntity = restTemplate.exchange(host, HttpMethod.GET,null, new ParameterizedTypeReference<BaseResponse<DtkTwdToTwdResponse>>() {}, paraMap);
@@ -50,7 +49,8 @@ public class TKLConvertor {
                 "--------------------------------------\n" +
                 "【下单方法】长按复制这条信息，打开手机淘宝，可领券并下单口令￥MEhf26dbqNt￥" +
                 "安卓手机还可以下载我们的自助找优惠券app 下载地址（官方邀请码000000）：http://app1.ffquan.com/apk/1444625/richangxiaohui.apk?t=16404156551612";
-        str = "1￥NrsL263IyXE￥/";
+//        str = "1￥NrsL263IyXE￥/";
+        str = "33.9亓！清风官方旗舰店！\\n原木本色抽纸3层100抽30包\\n￥x03h26WxwF8￥/";
 
         Pattern pattern = Pattern.compile("[\\s\\S]*(￥.*￥)[\\s\\S]*");
         Matcher matcher = pattern.matcher(str);
