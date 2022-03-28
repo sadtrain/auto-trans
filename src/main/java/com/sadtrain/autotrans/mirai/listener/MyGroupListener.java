@@ -1,9 +1,11 @@
 package com.sadtrain.autotrans.mirai.listener;
 
 import com.sadtrain.autotrans.api.SignMD5Util;
+import com.sadtrain.autotrans.api.TKLConvertor;
 import com.sadtrain.autotrans.api.response.DtkTwdToTwdResponse;
 import com.sadtrain.autotrans.life.LifeCycle;
 import com.sadtrain.autotrans.mirai.bots.MyBot;
+import com.sadtrain.autotrans.mirai.resolver.AssignMessageResolver;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
@@ -31,6 +33,12 @@ public class MyGroupListener implements LifeCycle {
     @Autowired
     private MyBot myBot;
 
+    @Autowired
+    private TKLConvertor tklConvertor;
+
+    @Autowired
+    private AssignMessageResolver assignMessageResolver;
+
     Group sqkbGroup;
 
     Group myGroup;
@@ -38,9 +46,7 @@ public class MyGroupListener implements LifeCycle {
     public static final Long sqxbGroupId = 639164037L;
 
     public static final Long myGroupId = 197315399L;
-    String appSecret = "53aed3457f5fd4f04c72b6378eccb03f";//应用sercret
-    String appKey = "623e87e1c0d83"; //应用key
-    String host = "https://openapi.dataoke.com/api/tb-service/twd-to-twd?version={version}&appKey={appKey}&content={content}&sign={sign}";//应用服务接口
+
 
     @Override
     public void start() {
@@ -61,42 +67,9 @@ public class MyGroupListener implements LifeCycle {
 //        eventChannel.filter(botEvent -> )
         eventChannel.subscribeAlways(GroupMessageEvent.class, event -> {
             logger.info("received a message from " + event.getGroup() + event);
-            if(!(event.getGroup().getId() == myGroupId)){
-                return;
+            if(event.getGroup().getId() == myGroupId){
+                assignMessageResolver.resolve(event,sqkbGroup);
             }
-            MessageChain messageChain = event.getMessage();
-            MessageChainBuilder newMassageBuilder = new MessageChainBuilder();
-            for (SingleMessage message : messageChain) {
-                if (message instanceof PlainText){
-                    String content = ((PlainText) message).getContent();
-                    Pattern pattern = Pattern.compile(".*(￥.*￥).*");
-                    Matcher matcher = pattern.matcher(content);
-                    if(matcher.matches()){
-                        String tkl = matcher.group(1);
-//                        System.out.println(matcher.group(1));
-                        TreeMap<String,String> paraMap = new TreeMap<>();
-                        paraMap.put("version","v1.0.0");
-                        paraMap.put("appKey",appKey);
-                        paraMap.put("content", tkl);
-                        String signStr = SignMD5Util.getSignStr(paraMap, appSecret);
-                        System.out.println(signStr);
-                        paraMap.put("sign", signStr);
-                        RestTemplate restTemplate = new RestTemplate();
-                        ResponseEntity<DtkTwdToTwdResponse> forEntity = restTemplate.getForEntity(host, DtkTwdToTwdResponse.class, paraMap);
-                        logger.info(forEntity.getBody().toString());
-                        String myTKL = forEntity.getBody().getTpwd();
-                        assert myTKL != null;
-                        String newContent = content.replaceAll(tkl, myTKL);
-                        newMassageBuilder.append(new PlainText(newContent));
-                    }
-                }else{
-                    newMassageBuilder.append(message);
-                }
-
-            }
-            MessageChain newMessage = newMassageBuilder.build();
-            logger.info(newMessage.toString());
-            sqkbGroup.sendMessage(newMessage);
         });
 
     }
