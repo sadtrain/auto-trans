@@ -7,6 +7,7 @@ import com.sadtrain.autotrans.api.response.DtkTwdToTwdResponse;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.MessageReceipt;
+import net.mamoe.mirai.message.data.AtAll;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
@@ -46,6 +47,8 @@ public class AssignMessageResolver {
                 }
                 newMassageBuilder.append(new PlainText(content));
             } else if (message instanceof Image) {
+                newMassageBuilder.append(message);
+            } else if (message instanceof AtAll){
                 newMassageBuilder.append(message);
             }
         }
