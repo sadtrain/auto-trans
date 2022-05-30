@@ -25,12 +25,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class AssignMessageResolver {
+public class AssignMessageResolver implements MessageResolver{
     private static Logger logger = LoggerFactory.getLogger(AssignMessageResolver.class);
     @Autowired
     private TKLConvertor tklConvertor;
 
-    public void resolve(MessageEvent event, Group dest) {
+    public MessageChain resolve(MessageEvent event) {
         MessageChain messageChain = event.getMessage();
         MessageChainBuilder newMassageBuilder = new MessageChainBuilder();
         for (SingleMessage message : messageChain) {
@@ -53,8 +53,8 @@ public class AssignMessageResolver {
             }
         }
         MessageChain newMessage = newMassageBuilder.build();
-        logger.info("prepare to send message：" + JSON.toJSONString(newMessage));
-        dest.sendMessage(newMessage);
+        return newMessage;
+
     }
 
 }

@@ -2,8 +2,6 @@ package com.sadtrain.autotrans.api;
 
 import com.sadtrain.autotrans.api.response.DtkTwdToTwdResponse;
 import com.sadtrain.autotrans.api.response.base.BaseResponse;
-import com.sadtrain.autotrans.mirai.listener.LJLGroupListener;
-import net.mamoe.mirai.message.data.PlainText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;

@@ -1,8 +1,7 @@
 package com.sadtrain.autotrans.life;
 
+import com.sadtrain.autotrans.mirai.bots.BotManager;
 import com.sadtrain.autotrans.mirai.bots.MyBot;
-import com.sadtrain.autotrans.mirai.listener.LJLGroupListener;
-import com.sadtrain.autotrans.mirai.listener.MyGroupListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -16,20 +15,12 @@ public class StartGlobalKeyboard implements CommandLineRunner {
 	private LifeCycleManager lifeCycleManager;
 
 	@Autowired
-	private MyBot myBots;
-
-	@Autowired
-	private LJLGroupListener ljlGroupListener;
-
-	@Autowired
-	private MyGroupListener myGroupListener;
+	private BotManager botManager;
 
 
 	@Override
 	public void run(String... args) {
-		lifeCycleManager.addService(myBots);
-		lifeCycleManager.addService(ljlGroupListener);
-		lifeCycleManager.addService(myGroupListener);
+		lifeCycleManager.addService(botManager);
 		lifeCycleManager.start();
 	}
  
