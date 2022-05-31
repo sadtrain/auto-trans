@@ -115,7 +115,7 @@ public class BotManager implements LifeCycle {
                     }
                 }
             }catch (Throwable e){
-                logger.error("handle message failed");
+                logger.error("handle message failed",e);
             }
         });
         listeners.add(groupMessageEventListener);

@@ -15,8 +15,14 @@ public class BotHelper {
     public static Bot newBot(Long botNum,String password){
         BotFactory.INSTANCE instance = BotFactory.INSTANCE;
         BotConfiguration botConfiguration = new BotConfiguration();
-        System.out.println(BotHelper.class.getClassLoader().getResource("").getPath());
-        botConfiguration.setWorkingDir(new File(BotHelper.class.getClassLoader().getResource("").getPath()));
+        if(System.getProperties().getProperty("os.name").toUpperCase().contains("WINDOWS")){
+            System.out.println(BotHelper.class.getClassLoader().getResource("").getPath());
+            botConfiguration.setWorkingDir(new File(BotHelper.class.getClassLoader().getResource("").getPath()));
+        }else{
+            File file = new File("/opt/mirai/work");
+            file.mkdirs();
+            botConfiguration.setWorkingDir(file);
+        }
         botConfiguration.fileBasedDeviceInfo();
         //上线后需要关闭
 //        botConfiguration.enableContactCache();
