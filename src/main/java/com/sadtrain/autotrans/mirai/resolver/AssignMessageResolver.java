@@ -40,9 +40,17 @@ public class AssignMessageResolver implements MessageResolver{
     private TKLExtractor tklExtractor;
     @Autowired
     private TBActivityConvertor tbActivityConvertor;
-    static Pattern pattern = Pattern.compile("[\\s\\S]*(￥.*￥)[\\s\\S]*");
-    static Pattern jdUrlpattern = Pattern.compile(".*(https\\:\\/\\/u\\.jd\\.com\\/\\w+).*");;
+    static Pattern pattern = Pattern.compile("[\\s\\S]*?(￥.*￥)[\\s\\S]*?");
+    static Pattern jdUrlpattern = Pattern.compile(".*?(https\\:\\/\\/u\\.jd\\.com\\/\\w+).*?");;
+    static Pattern tbUrlpattern = Pattern.compile(".*?(https\\:\\/\\/m\\.[tT][bB]\\.cn\\/[0-9A-Za-z\\.\\_]+).*?");;
 
+    public static void main(String[] args) {
+        Matcher matcher = tbUrlpattern.matcher("我不是https://m.tb.cn/qwersa.sdf水电费https://m.tb.cn/qwsdfersa.sdf");
+        matcher.find();
+        System.out.println(matcher.group(1));
+        matcher.find();
+        System.out.println(matcher.group(1));
+    }
     public MessageChain resolve(MessageEvent event) {
         MessageChain messageChain = event.getMessage();
         MessageChainBuilder newMassageBuilder = new MessageChainBuilder();
@@ -51,32 +59,36 @@ public class AssignMessageResolver implements MessageResolver{
                 //todo 可能有多个淘口令，都要转
                 String content = ((PlainText) message).getContent();
 
-                DtkParseContentResponse convert = tklExtractor.convert(content);
-                if(convert != null){
-                    Matcher matcher = pattern.matcher(content);
-                    if (matcher.matches()) {
-                        String tkl = matcher.group(1);
-                        String dataType = convert.getDataType();
-                        if(TKLExtractor.DATATYPE_ACTIVITY.equals(dataType)){
-                            String myTKL = tbActivityConvertor.convert(tkl);
-                            assert myTKL != null;
-                            content = content.replaceAll(tkl, myTKL);
-                        }else{
-                            String myTKL = tklConvertor.convert(tkl);
+                Matcher matcher1 = pattern.matcher(content);
+                while(matcher1.find()){
+                    DtkParseContentResponse convert = tklExtractor.convert(content);
+                    if(convert != null){
+                        Matcher matcher = pattern.matcher(content);
+                        if (matcher.matches()) {
+                            String tkl = matcher.group(1);
+                            String dataType = convert.getDataType();
+                            if(TKLExtractor.DATATYPE_ACTIVITY.equals(dataType)){
+                                String myTKL = tbActivityConvertor.convert(tkl);
+                                assert myTKL != null;
+                                content = content.replaceAll(tkl, myTKL);
+                            }else{
+                                String myTKL = tklConvertor.convert(tkl);
+                                assert myTKL != null;
+                                content = content.replaceAll(tkl, myTKL);
+                            }
+//                        System.out.println(matcher.group(1));
+                        }
+                    }else{
+                        Matcher jdMatcher = jdUrlpattern.matcher(content);
+                        if (jdMatcher.matches()) {
+                            String tkl = jdMatcher.group(1);
+//                        System.out.println(matcher.group(1));
+                            String myTKL = jdUrlConvertor.convert(tkl);
                             assert myTKL != null;
                             content = content.replaceAll(tkl, myTKL);
                         }
-//                        System.out.println(matcher.group(1));
                     }
-                }else{
-                    Matcher jdMatcher = jdUrlpattern.matcher(content);
-                    if (jdMatcher.matches()) {
-                        String tkl = jdMatcher.group(1);
-//                        System.out.println(matcher.group(1));
-                        String myTKL = jdUrlConvertor.convert(tkl);
-                        assert myTKL != null;
-                        content = content.replaceAll(tkl, myTKL);
-                    }
+
                 }
 
                 newMassageBuilder.append(new PlainText(content));
