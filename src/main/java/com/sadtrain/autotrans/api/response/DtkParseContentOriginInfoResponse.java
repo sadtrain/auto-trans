@@ -24,6 +24,25 @@ public class DtkParseContentOriginInfoResponse {
     private String pid;
     private Integer status;
 
+    @Override
+    public String toString() {
+        return "DtkParseContentOriginInfoResponse{" +
+                "title='" + title + '\'' +
+                ", shopName='" + shopName + '\'' +
+                ", shopLogo='" + shopLogo + '\'' +
+                ", image='" + image + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", amount=" + amount +
+                ", startFee=" + startFee +
+                ", price=" + price +
+                ", actualPrice=" + actualPrice +
+                ", activityId='" + activityId + '\'' +
+                ", pid='" + pid + '\'' +
+                ", status=" + status +
+                '}';
+    }
+
     public String getTitle() {
         return title;
     }

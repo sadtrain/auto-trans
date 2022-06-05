@@ -13,6 +13,14 @@ public class DtkJdCommodityTransformLinkResponse {
     @ApiModelProperty("商品转链后的长链接")
     private String longUrl;
 
+    @Override
+    public String toString() {
+        return "DtkJdCommodityTransformLinkResponse{" +
+                "shortUrl='" + shortUrl + '\'' +
+                ", longUrl='" + longUrl + '\'' +
+                '}';
+    }
+
     public String getShortUrl() {
         return shortUrl;
     }

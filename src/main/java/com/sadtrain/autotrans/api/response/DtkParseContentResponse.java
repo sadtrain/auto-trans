@@ -19,6 +19,22 @@ public class DtkParseContentResponse {
     private String mainPic;
     private String dataType;
 
+    @Override
+    public String toString() {
+        return "DtkParseContentResponse{" +
+                "goodsId='" + goodsId + '\'' +
+                ", originUrl='" + originUrl + '\'' +
+                ", originType='" + originType + '\'' +
+                ", commissionType='" + commissionType + '\'' +
+                ", commissionRate=" + commissionRate +
+                ", originInfo=" + originInfo +
+                ", itemId='" + itemId + '\'' +
+                ", itemName='" + itemName + '\'' +
+                ", mainPic='" + mainPic + '\'' +
+                ", dataType='" + dataType + '\'' +
+                '}';
+    }
+
     public String getGoodsId() {
         return goodsId;
     }

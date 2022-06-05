@@ -22,6 +22,26 @@ public class DtkTwdToTwdResponse {
     private String couponRemainCount;
     private String shortUrl;
 
+    @Override
+    public String toString() {
+        return "DtkTwdToTwdResponse{" +
+                "itemId='" + itemId + '\'' +
+                ", tpwd='" + tpwd + '\'' +
+                ", longTpwd='" + longTpwd + '\'' +
+                ", maxCommissionRate='" + maxCommissionRate + '\'' +
+                ", minCommissionRate='" + minCommissionRate + '\'' +
+                ", originUrl='" + originUrl + '\'' +
+                ", title='" + title + '\'' +
+                ", couponClickUrl='" + couponClickUrl + '\'' +
+                ", couponInfo='" + couponInfo + '\'' +
+                ", couponEndTime='" + couponEndTime + '\'' +
+                ", couponStartTime='" + couponStartTime + '\'' +
+                ", couponTotalCount='" + couponTotalCount + '\'' +
+                ", couponRemainCount='" + couponRemainCount + '\'' +
+                ", shortUrl='" + shortUrl + '\'' +
+                '}';
+    }
+
     public String getItemId() {
         return itemId;
     }
@@ -134,23 +154,4 @@ public class DtkTwdToTwdResponse {
         this.shortUrl = shortUrl;
     }
 
-    @Override
-    public String toString() {
-        return "DtkTwdToTwdResponse{" +
-                "itemId='" + itemId + '\'' +
-                ", tpwd='" + tpwd + '\'' +
-                ", longTpwd='" + longTpwd + '\'' +
-                ", maxCommissionRate='" + maxCommissionRate + '\'' +
-                ", minCommissionRate='" + minCommissionRate + '\'' +
-                ", originUrl='" + originUrl + '\'' +
-                ", title='" + title + '\'' +
-                ", couponClickUrl='" + couponClickUrl + '\'' +
-                ", couponInfo='" + couponInfo + '\'' +
-                ", couponEndTime='" + couponEndTime + '\'' +
-                ", couponStartTime='" + couponStartTime + '\'' +
-                ", couponTotalCount='" + couponTotalCount + '\'' +
-                ", couponRemainCount='" + couponRemainCount + '\'' +
-                ", shortUrl='" + shortUrl + '\'' +
-                '}';
-    }
 }

@@ -30,6 +30,21 @@ public class DtkActivityLinkResponse {
     @JsonAlias("wx_miniprogram_path")
     private String wxMiniProgramPath;
 
+    @Override
+    public String toString() {
+        return "DtkActivityLinkResponse{" +
+                "pageName='" + pageName + '\'' +
+                ", clickUrl='" + clickUrl + '\'' +
+                ", tpwd='" + tpwd + '\'' +
+                ", longTpwd='" + longTpwd + '\'' +
+                ", terminalType='" + terminalType + '\'' +
+                ", pageStartTime='" + pageStartTime + '\'' +
+                ", pageEndTime='" + pageEndTime + '\'' +
+                ", wxQrcodeUrl='" + wxQrcodeUrl + '\'' +
+                ", wxMiniProgramPath='" + wxMiniProgramPath + '\'' +
+                '}';
+    }
+
     public String getPageName() {
         return pageName;
     }

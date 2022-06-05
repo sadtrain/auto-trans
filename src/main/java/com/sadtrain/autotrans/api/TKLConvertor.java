@@ -25,7 +25,7 @@ public class TKLConvertor {
     String appKey = "623e87e1c0d83"; //应用key
     String host = "https://openapi.dataoke.com/api/tb-service/twd-to-twd?version={version}&appKey={appKey}&pid={pid}&content={content}&sign={sign}";//应用服务接口
 
-    public String convert(String tkl){
+    public DtkTwdToTwdResponse convert(String tkl){
         TreeMap<String,String> paraMap = new TreeMap<>();
         paraMap.put("appKey",appKey);
         paraMap.put("content", tkl);
@@ -37,7 +37,7 @@ public class TKLConvertor {
         ResponseEntity<BaseResponse<DtkTwdToTwdResponse>> forEntity = restTemplate.exchange(host, HttpMethod.GET,null, new ParameterizedTypeReference<BaseResponse<DtkTwdToTwdResponse>>() {}, paraMap);
 //        ResponseEntity<DtkTwdToTwdResponse> forEntity = restTemplate.getForEntity(host, DtkTwdToTwdResponse.class, paraMap);
         logger.info(forEntity.getBody().toString());
-        return forEntity.getBody().getData().getTpwd();
+        return forEntity.getBody().getData();
     }
 
     public static void main(String[] args) {
@@ -55,9 +55,9 @@ public class TKLConvertor {
         if(matcher.matches()){
             String tkl = matcher.group(1);
 //                        System.out.println(matcher.group(1));
-            String myTKL = convertor.convert(tkl);
-            assert myTKL != null;
-            System.out.println(myTKL);
+//            String myTKL = convertor.convert(tkl);
+//            assert myTKL != null;
+//            System.out.println(myTKL);
         }else{
 
         }
