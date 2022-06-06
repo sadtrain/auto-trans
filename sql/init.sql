@@ -1,8 +1,23 @@
+set -x
+wget -P /opt https://mirrors.huaweicloud.com/java/jdk/11+28/jdk-11_linux-x64_bin.tar.gz
+tar -zxf jdk-11_linux-x64_bin.tar.gz -C /opt
+mv /opt/jdk-11 /opt/java
+sed -i '$a export JAVA_HOME=/opt/java \nexport PATH=$PATH:$JAVA_HOME/bin:/opt/maven/bin' ~/.bashrc
+source ~/.bashrc
+apt-get install -y mysql-server
+wget -P /opt https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.79/bin/apache-tomcat-8.5.79.tar.gz
+tar -zxf apache-tomcat-8.5.79.tar.gz -C /opt
+mv /opt/apache-tomcat-8.5.79 /opt/tomcat
+rm -rf /opt/tomcat/webapps/*
+touch ~/.vimrc
+sed -i '$a if has('mouse')\n    set mouse-=a\nendif' ~/.vimrc
 
 vi /etc/mysql/mariadb.conf.d/50-server.cnf
+vi /etc/mysql/mysql.conf.d/mysqld.cnf
 修改为0.0.0.0
 mysql -uroot
 use mysql
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Alias2011';
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'Alias2011' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' IDENTIFIED BY 'Alias2011' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'::1' IDENTIFIED BY 'Alias2011' WITH GRANT OPTION;
