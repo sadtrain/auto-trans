@@ -67,4 +67,20 @@ public class AssignMessageResolverTest {
         String s = assignMessageResolver.handlerText(str);
         System.out.println(s);
     }
+
+    @Test
+    public void testJD(){
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.scan("com.sadtrain.autotrans.mirai.resolver","com.sadtrain.autotrans.api");
+        context.refresh();
+        AssignMessageResolver assignMessageResolver = context.getBean(AssignMessageResolver.class);
+        String str = "会员领200-10全品奍\n" +
+                "https://u.jd.com/lKfRbZ6  \n" +
+                "云南白药牙膏500g 59亓\n" +
+                "到手5支   赠牙刷2支\n" +
+                "https://u.jd.com/lKf9e2W  ";
+
+        String s = assignMessageResolver.handlerText(str);
+        System.out.println(s);
+    }
 }

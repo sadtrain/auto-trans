@@ -100,7 +100,9 @@ public class BotManager implements LifeCycle {
                 logger.info("received a message from " + event.getGroup() + event.getSenderName());
                 if (event.getGroup().getId() == listener.getGroupNum()) {
                     List<Consumer> consumers = listenerConsumer.get(listener.getId());
-                    MessageChain messageChain = assignMessageResolver.resolve(event);
+                    List<String> keyWordsList = listener.getKeyWordsList();
+                    MessageChain messageChain = assignMessageResolver.resolve(event,keyWordsList);
+
                     for (Consumer consumer : consumers) {
                         logger.info("prepare to send message：" + JSON.toJSONString(messageChain));
 
