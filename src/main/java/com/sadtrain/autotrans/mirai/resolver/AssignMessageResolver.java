@@ -70,7 +70,7 @@ public class AssignMessageResolver implements MessageResolver {
 //        System.out.println(matcher.group(1));
 //    }
 
-    public MessageChain resolve(MessageEvent event,List<>) {
+    public MessageChain resolve(MessageEvent event) {
         MessageChain messageChain = event.getMessage();
         MessageChainBuilder newMassageBuilder = new MessageChainBuilder();
         for (SingleMessage message : messageChain) {
@@ -80,7 +80,7 @@ public class AssignMessageResolver implements MessageResolver {
                     newMassageBuilder.append(new PlainText(content));
                 }
             } else if (message instanceof Image) {
-                ((Image) message).getImageId()
+//                ((Image) message).getImageId()
                 newMassageBuilder.append(message);
             } else if (message instanceof AtAll) {
                 newMassageBuilder.append(message);

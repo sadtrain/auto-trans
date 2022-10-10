@@ -19,7 +19,7 @@ public class BotHelper {
             System.out.println(BotHelper.class.getClassLoader().getResource("").getPath());
             botConfiguration.setWorkingDir(new File(BotHelper.class.getClassLoader().getResource("").getPath()));
         }else{
-            File file = new File("/opt/mirai/work");
+            File file = new File("/Users/zgs/opt/mirai/work");
             file.mkdirs();
             botConfiguration.setWorkingDir(file);
         }

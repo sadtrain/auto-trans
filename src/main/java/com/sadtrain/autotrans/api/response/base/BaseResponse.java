@@ -28,7 +28,14 @@ public class BaseResponse <T> {
     public void setData(T data) {
         this.data = data;
     }
-
+    public static void main(String[] args) {
+//        System.out.println(StringUtils.replace("a",".*","x"));
+//        Matcher matcher = Pattern.compile((String) ".*").matcher("a");
+//        matcher.matches();
+//        System.out.println(matcher.group(0));
+//        System.out.println(matcher.group(1));
+        System.out.println("a".replaceAll(".*","xxx"));
+    }
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("BaseResponse{");
