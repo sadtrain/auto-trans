@@ -187,13 +187,13 @@ public class AssignMessageResolver implements MessageResolver {
             DtkParseContentResponse response = tklExtractor.convert(tkl);
             if (response == null) {
                 //todo 转成短链接
-                DtkActivityLinkResponse dtkActivityLinkResponse = shortUrlConvertor.convert(tkl);
-                if (dtkActivityLinkResponse == null) {
-                    logger.error("convert failed{}", content);
-                    throw new RuntimeException("convert failed");
+                String longTpwd = shortUrlConvertor.convert(tkl);
+                if (longTpwd == null) {
+                    logger.warn("short url convert failed{}", content);
+                    tbUrl.appendReplacement(sb1,"");
+                }else{
+                    tbUrl.appendReplacement(sb1,longTpwd);
                 }
-                String longTpwd = dtkActivityLinkResponse.getLongTpwd();
-                tbUrl.appendReplacement(sb1,longTpwd);
             } else {
                 String dataType = response.getDataType();
                 if (TKLExtractor.DATATYPE_ACTIVITY.equals(dataType)) {
@@ -249,5 +249,33 @@ public class AssignMessageResolver implements MessageResolver {
         content = content.replaceAll(str1,str2);
         System.out.println(content);
 //        String str2=""
+    }
+
+    public void setTklConvertor(TKLConvertor tklConvertor) {
+        this.tklConvertor = tklConvertor;
+    }
+
+    public void setJdUrlConvertor(JDUrlConvertor jdUrlConvertor) {
+        this.jdUrlConvertor = jdUrlConvertor;
+    }
+
+    public void setTklExtractor(TKLExtractor tklExtractor) {
+        this.tklExtractor = tklExtractor;
+    }
+
+    public void setTbActivityConvertor(TBActivityConvertor tbActivityConvertor) {
+        this.tbActivityConvertor = tbActivityConvertor;
+    }
+
+    public void setGoodsConvertor(GoodsConvertor goodsConvertor) {
+        this.goodsConvertor = goodsConvertor;
+    }
+
+    public void setShortUrlConvertor(ShortUrlConvertor shortUrlConvertor) {
+        this.shortUrlConvertor = shortUrlConvertor;
+    }
+
+    public void setKuaiZhanConvertor(KuaiZhanConvertor kuaiZhanConvertor) {
+        this.kuaiZhanConvertor = kuaiZhanConvertor;
     }
 }
