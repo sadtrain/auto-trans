@@ -31,7 +31,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,7 +79,6 @@ public class AssignMessageResolver implements MessageResolver {
                     newMassageBuilder.append(new PlainText(content));
                 }
             } else if (message instanceof Image) {
-//                ((Image) message).getImageId()
                 newMassageBuilder.append(message);
             } else if (message instanceof AtAll) {
                 newMassageBuilder.append(message);
@@ -224,7 +222,7 @@ public class AssignMessageResolver implements MessageResolver {
             String kuaiZhanUrl = kuaizhanMatcher.group(1);
             DtkGetPrivilegeLinkResponse convert = kuaiZhanConvertor.convert(kuaiZhanUrl);
             if (convert != null) {
-                kuaizhanMatcher.appendReplacement(sb,convert.getShortUrl());
+                kuaizhanMatcher.appendReplacement(sb,convert.getKuaiZhanUrl());
 //                content = content.replaceAll(kuaiZhanUrl, convert.getKuaiZhanUrl());
             }
         }
