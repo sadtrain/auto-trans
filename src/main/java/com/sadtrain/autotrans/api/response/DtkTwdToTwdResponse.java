@@ -154,4 +154,8 @@ public class DtkTwdToTwdResponse {
         this.shortUrl = shortUrl;
     }
 
+    public static void main(String[] args) {
+        double v = Double.parseDouble("32 ");
+        System.out.println(v);
+    }
 }

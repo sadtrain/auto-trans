@@ -53,16 +53,18 @@ public class AssignMessageResolver implements MessageResolver {
     @Autowired
     private KuaiZhanConvertor kuaiZhanConvertor;
     static Pattern pattern = Pattern.compile("([￥(]\\w{8,12}[￥)])");
-    static Pattern jdUrlpattern = Pattern.compile("(https\\:\\/\\/u\\.jd\\.com\\/\\w+)");
+    static Pattern jdUrlpattern = Pattern.compile("(https\\:\\/\\/(?:item\\.m|u)\\.jd\\.com\\/[0-9A-Za-z._?=&/]+)");
+//    static Pattern jdGoodsUrlpattern = Pattern.compile("(https\\:\\/\\/(?:item|coupon)\\.m\\.jd\\.com\\/[0-9A-Za-z._?=&]+)");
     ;
-    static Pattern shortTbUrlpattern = Pattern.compile("(https\\:\\/\\/m\\.[tT][bB]\\.cn\\/[0-9A-Za-z._?=]+)");
+    static Pattern shortTbUrlpattern = Pattern.compile("(https\\:\\/\\/m\\.[tT][bB]\\.cn\\/[0-9A-Za-z._?=&]+)");
     ;
-    static Pattern sClickUrlpattern = Pattern.compile("(https\\:\\/\\/s\\.click\\.[Tt]aobao\\.com\\/[0-9A-Za-z._?=]+)");
+    static Pattern sClickUrlpattern = Pattern.compile("(https\\:\\/\\/s\\.click\\.[Tt]aobao\\.com\\/[0-9A-Za-z._?=&]+)");
     ;
-    static Pattern kuaiZhanUrlpattern = Pattern.compile("(https://yun095\\.kuaizhan\\.com/[0-9A-Za-z._?=]+)");
+    static Pattern kuaiZhanUrlpattern = Pattern.compile("(https://yun095\\.kuaizhan\\.com/[0-9A-Za-z._?=&]+)");
 
 //    public static void main(String[] args) {
-//        Matcher matcher = shortTbUrlpattern.matcher("我不是https://m.tb.cn/qwersa.sdf水电费https://m.tb.cn/qwsdfersa.sdf");
+//        Pattern pattern = Pattern.compile("[0-9A-Za-z._?=&]+");
+//        Matcher matcher = pattern.matcher("100035493252.html?utm_user=plusmember&ad_od=share&utm_source=androidapp&utm_medium=appshare&utm_campaign=t_335139774&utm_term=CopyURL");
 //        matcher.find();
 //        System.out.println(matcher.group(1));
 //        matcher.find();
@@ -74,7 +76,11 @@ public class AssignMessageResolver implements MessageResolver {
         MessageChainBuilder newMassageBuilder = new MessageChainBuilder();
         for (SingleMessage message : messageChain) {
             if (message instanceof PlainText) {
-                String content = handlerText(((PlainText) message).getContent());
+                String text = ((PlainText) message).getContent();
+                if(text.contains("淘宝+京东自助查券网站")){
+                    return null;
+                }
+                String content = handlerText(text);
                 if (content != null) {
                     newMassageBuilder.append(new PlainText(content));
                 }
@@ -187,13 +193,13 @@ public class AssignMessageResolver implements MessageResolver {
             DtkParseContentResponse response = tklExtractor.convert(tkl);
             if (response == null) {
                 //todo 转成短链接
-                String longTpwd = shortUrlConvertor.convert(tkl);
-                if (longTpwd == null) {
-                    logger.warn("short url convert failed{}", content);
-                    tbUrl.appendReplacement(sb1,"");
-                }else{
-                    tbUrl.appendReplacement(sb1,longTpwd);
+                DtkActivityLinkResponse dtkActivityLinkResponse = shortUrlConvertor.convert(tkl);
+                if (dtkActivityLinkResponse == null) {
+                    logger.error("convert failed{}", content);
+                    throw new RuntimeException("convert failed");
                 }
+                String longTpwd = dtkActivityLinkResponse.getLongTpwd();
+                tbUrl.appendReplacement(sb1,longTpwd);
             } else {
                 String dataType = response.getDataType();
                 if (TKLExtractor.DATATYPE_ACTIVITY.equals(dataType)) {
@@ -233,49 +239,21 @@ public class AssignMessageResolver implements MessageResolver {
 
     }
 
-    public static void main(String[] args) {
-        String content="牙膏8件套装！6牙膏+2牙刷\n" +
-                "黑妹官方旗舰店 按照要求加车\n" +
-                "16块左右！共八件套！！\n" +
-                "~~~\n" +
-                "第一步【牙膏加购物车1份】\n" +
-                "https://yun095.kuaizhan.com/?3EWl1g \n" +
-                "-\n" +
-                "第二步【凑单款加购物车1份】\n" +
-                "https://yun095.kuaizhan.com/?49nI9Q ";
-        String str1="https://yun095.kuaizhan.com/?3EWl1g";
-        String str2="https://08gea.kuaizhan.com/?_s=BM3qy";
-        System.out.println(content.indexOf(str1));
-        content = content.replaceAll(str1,str2);
-        System.out.println(content);
-//        String str2=""
-    }
-
-    public void setTklConvertor(TKLConvertor tklConvertor) {
-        this.tklConvertor = tklConvertor;
-    }
-
-    public void setJdUrlConvertor(JDUrlConvertor jdUrlConvertor) {
-        this.jdUrlConvertor = jdUrlConvertor;
-    }
-
-    public void setTklExtractor(TKLExtractor tklExtractor) {
-        this.tklExtractor = tklExtractor;
-    }
-
-    public void setTbActivityConvertor(TBActivityConvertor tbActivityConvertor) {
-        this.tbActivityConvertor = tbActivityConvertor;
-    }
-
-    public void setGoodsConvertor(GoodsConvertor goodsConvertor) {
-        this.goodsConvertor = goodsConvertor;
-    }
-
-    public void setShortUrlConvertor(ShortUrlConvertor shortUrlConvertor) {
-        this.shortUrlConvertor = shortUrlConvertor;
-    }
-
-    public void setKuaiZhanConvertor(KuaiZhanConvertor kuaiZhanConvertor) {
-        this.kuaiZhanConvertor = kuaiZhanConvertor;
-    }
+//    public static void main(String[] args) {
+//        String content="牙膏8件套装！6牙膏+2牙刷\n" +
+//                "黑妹官方旗舰店 按照要求加车\n" +
+//                "16块左右！共八件套！！\n" +
+//                "~~~\n" +
+//                "第一步【牙膏加购物车1份】\n" +
+//                "https://yun095.kuaizhan.com/?3EWl1g \n" +
+//                "-\n" +
+//                "第二步【凑单款加购物车1份】\n" +
+//                "https://yun095.kuaizhan.com/?49nI9Q ";
+//        String str1="https://yun095.kuaizhan.com/?3EWl1g";
+//        String str2="https://08gea.kuaizhan.com/?_s=BM3qy";
+//        System.out.println(content.indexOf(str1));
+//        content = content.replaceAll(str1,str2);
+//        System.out.println(content);
+////        String str2=""
+//    }
 }

@@ -37,7 +37,7 @@ public class AssignMessageResolverTest {
         context.scan("com.sadtrain.autotrans.mirai.resolver","com.sadtrain.autotrans.api");
         context.refresh();
         AssignMessageResolver assignMessageResolver = context.getBean(AssignMessageResolver.class);
-        String str = "【淘宝】我是测试字符串https://m.tb.cn/h.fuMb675?tk=wnIo2m1sLEC「纹身贴防水持久仿真女 小清新花图案 网红ins风锁骨花朵 贴纸50张」";
+        String str = "https://item.m.jd.com/product/100035493252.html?utm_user=plusmember&ad_od=share&utm_source=androidapp&utm_medium=appshare&utm_campaign=t_335139774&utm_term=CopyURL";
         MessageChainBuilder newMassageBuilder = new MessageChainBuilder();
         newMassageBuilder.append("28￥I17p2lJICHj￥ https://m.tb.cn/h.fHkdGPl?sm=2cb1f5  快抢最高22888元红包！");
         MessageChain build = newMassageBuilder.build();
