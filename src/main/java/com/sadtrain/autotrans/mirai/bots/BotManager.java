@@ -1,6 +1,7 @@
 package com.sadtrain.autotrans.mirai.bots;
 
 import com.alibaba.fastjson.JSON;
+import com.sadtrain.autotrans.config.BotConfiguration;
 import com.sadtrain.autotrans.db.entity.BotEntity;
 import com.sadtrain.autotrans.db.entity.Consumer;
 import com.sadtrain.autotrans.db.mapper.BotMapper;
@@ -193,27 +194,31 @@ public class BotManager implements LifeCycle {
 
     @Override
     public void start() {
-        List<BotEntity> botEntities = botMapper.selectList(null);
-        for (BotEntity botEntity : botEntities) {
-            Bot bot = getBot(botEntity.getBotNum());
-            if(bot != null){
-                bot.login();
-            }else{
-                bot = BotHelper.newBot(botEntity.getBotNum(), botEntity.getPassword());
-                bot.login();
-                addBot(bot);
-                logger.info("start bot {} success",bot.getId() + bot.getNick());
+        if (BotConfiguration.loginBot) {
+            List<BotEntity> botEntities = botMapper.selectList(null);
+            for (BotEntity botEntity : botEntities) {
+                Bot bot = getBot(botEntity.getBotNum());
+                if (bot != null) {
+                    bot.login();
+                } else {
+                    bot = BotHelper.newBot(botEntity.getBotNum(), botEntity.getPassword());
+                    bot.login();
+                    addBot(bot);
+                    logger.info("start bot {} success", bot.getId() + bot.getNick());
+                }
             }
-        }
-        List<com.sadtrain.autotrans.db.entity.Listener> listeners = listenerMapper.selectList(null);
-        for (com.sadtrain.autotrans.db.entity.Listener listener : listeners) {
-            addListener(listener);
-            logger.info("add listener {} success",listener);
-        }
-        List<Consumer> consumers = consumerMapper.selectList(null);
-        for (Consumer consumer : consumers) {
-            addConsumer(consumer,consumer.getListenerId());
-            logger.info("add consumer {} success",consumer);
+            List<com.sadtrain.autotrans.db.entity.Listener> listeners = listenerMapper.selectList(null);
+            for (com.sadtrain.autotrans.db.entity.Listener listener : listeners) {
+                addListener(listener);
+                logger.info("add listener {} success", listener);
+            }
+            List<Consumer> consumers = consumerMapper.selectList(null);
+            for (Consumer consumer : consumers) {
+                addConsumer(consumer, consumer.getListenerId());
+                logger.info("add consumer {} success", consumer);
+            }
+        } else {
+            logger.info("login bot is disabled");
         }
     }
 

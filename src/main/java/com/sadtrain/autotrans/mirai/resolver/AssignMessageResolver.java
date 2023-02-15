@@ -193,12 +193,12 @@ public class AssignMessageResolver implements MessageResolver {
             DtkParseContentResponse response = tklExtractor.convert(tkl);
             if (response == null) {
                 //todo 转成短链接
-                DtkActivityLinkResponse dtkActivityLinkResponse = shortUrlConvertor.convert(tkl);
+                String dtkActivityLinkResponse = shortUrlConvertor.convert(tkl);
                 if (dtkActivityLinkResponse == null) {
                     logger.error("convert failed{}", content);
                     throw new RuntimeException("convert failed");
                 }
-                String longTpwd = dtkActivityLinkResponse.getLongTpwd();
+                String longTpwd = dtkActivityLinkResponse;
                 tbUrl.appendReplacement(sb1,longTpwd);
             } else {
                 String dataType = response.getDataType();
@@ -256,4 +256,57 @@ public class AssignMessageResolver implements MessageResolver {
 //        System.out.println(content);
 ////        String str2=""
 //    }
+
+
+    public static void setLogger(Logger logger) {
+        AssignMessageResolver.logger = logger;
+    }
+
+    public void setTklConvertor(TKLConvertor tklConvertor) {
+        this.tklConvertor = tklConvertor;
+    }
+
+    public void setJdUrlConvertor(JDUrlConvertor jdUrlConvertor) {
+        this.jdUrlConvertor = jdUrlConvertor;
+    }
+
+    public void setTklExtractor(TKLExtractor tklExtractor) {
+        this.tklExtractor = tklExtractor;
+    }
+
+    public void setTbActivityConvertor(TBActivityConvertor tbActivityConvertor) {
+        this.tbActivityConvertor = tbActivityConvertor;
+    }
+
+    public void setGoodsConvertor(GoodsConvertor goodsConvertor) {
+        this.goodsConvertor = goodsConvertor;
+    }
+
+    public void setShortUrlConvertor(ShortUrlConvertor shortUrlConvertor) {
+        this.shortUrlConvertor = shortUrlConvertor;
+    }
+
+    public void setKuaiZhanConvertor(KuaiZhanConvertor kuaiZhanConvertor) {
+        this.kuaiZhanConvertor = kuaiZhanConvertor;
+    }
+
+    public static void setPattern(Pattern pattern) {
+        AssignMessageResolver.pattern = pattern;
+    }
+
+    public static void setJdUrlpattern(Pattern jdUrlpattern) {
+        AssignMessageResolver.jdUrlpattern = jdUrlpattern;
+    }
+
+    public static void setShortTbUrlpattern(Pattern shortTbUrlpattern) {
+        AssignMessageResolver.shortTbUrlpattern = shortTbUrlpattern;
+    }
+
+    public static void setsClickUrlpattern(Pattern sClickUrlpattern) {
+        AssignMessageResolver.sClickUrlpattern = sClickUrlpattern;
+    }
+
+    public static void setKuaiZhanUrlpattern(Pattern kuaiZhanUrlpattern) {
+        AssignMessageResolver.kuaiZhanUrlpattern = kuaiZhanUrlpattern;
+    }
 }
