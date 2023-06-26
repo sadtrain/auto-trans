@@ -3,7 +3,9 @@ package com.sadtrain.autotrans.mirai.bots;
 import com.sadtrain.autotrans.web.request.AddBotRequest;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
+import net.mamoe.mirai.auth.BotAuthorization;
 import net.mamoe.mirai.utils.BotConfiguration;
+import net.mamoe.mirai.utils.LoginSolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +26,7 @@ public class BotHelper {
             botConfiguration.setWorkingDir(file);
         }
         botConfiguration.fileBasedDeviceInfo();
+
         //上线后需要关闭
 //        botConfiguration.enableContactCache();
 //        BotConfiguration.ContactListCache contactListCache = botConfiguration.getContactListCache();
@@ -32,7 +35,9 @@ public class BotHelper {
 //        contactListCache.setSaveIntervalMillis(60000); // 可选设置有更新时的保存时间间隔, 默认 60 秒
 
         botConfiguration.setProtocol(BotConfiguration.MiraiProtocol.MACOS);
-        Bot myBot = instance.newBot(botNum, password, botConfiguration);
+//        botConfiguration.setLoginSolver(LoginSolver.Companion.getSingleSolver());
+//        Bot myBot = instance.newBot(botNum, password, botConfiguration);
+        Bot myBot = instance.newBot(botNum, BotAuthorization.byQRCode(), botConfiguration);
         return myBot;
     }
 }
