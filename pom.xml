@@ -39,17 +39,17 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>net.mamoe</groupId>
-            <artifactId>mirai-core-jvm</artifactId>
-            <version>2.15.0-RC</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>kotlinx-coroutines-core-jvm</artifactId>
-                    <groupId>org.jetbrains.kotlinx</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>net.mamoe</groupId>-->
+<!--            <artifactId>mirai-core-jvm</artifactId>-->
+<!--            <version>2.15.0-RC</version>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>kotlinx-coroutines-core-jvm</artifactId>-->
+<!--                    <groupId>org.jetbrains.kotlinx</groupId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-core-jvm</artifactId>
@@ -159,6 +159,32 @@
             <groupId>com.squareup.okio</groupId>
             <artifactId>okio</artifactId>
             <version>1.17.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alias</groupId>  <!--自定义-->
+            <artifactId>fix-protocol</artifactId>    <!--自定义-->
+            <version>1.0</version> <!--自定义-->
+            <scope>system</scope> <!--system，类似provided，需要显式提供依赖的jar以后，Maven就不会在Repository中查找它-->
+            <systemPath>${basedir}/lib/fix-protocol-version-1.8.4-disabletlv.jar</systemPath> <!--项目根目录下的lib文件夹下，也可以是本机其它目录的绝对路径-->
+        </dependency>
+        <dependency>
+            <groupId>com.alias</groupId>  <!--自定义-->
+            <artifactId>mirai-core</artifactId>    <!--自定义-->
+            <version>1.0</version> <!--自定义-->
+            <scope>system</scope> <!--system，类似provided，需要显式提供依赖的jar以后，Maven就不会在Repository中查找它-->
+            <systemPath>${basedir}/lib/mirai-core-all-2.15.0-ea.jar</systemPath> <!--项目根目录下的lib文件夹下，也可以是本机其它目录的绝对路径-->
+        </dependency>
+        <dependency>
+            <groupId>com.alias</groupId>  <!--自定义-->
+            <artifactId>sign-handler</artifactId>    <!--自定义-->
+            <version>1.0</version> <!--自定义-->
+            <scope>system</scope> <!--system，类似provided，需要显式提供依赖的jar以后，Maven就不会在Repository中查找它-->
+            <systemPath>${basedir}/lib/MiraiSignHandler.jar</systemPath> <!--项目根目录下的lib文件夹下，也可以是本机其它目录的绝对路径-->
         </dependency>
     </dependencies>
 

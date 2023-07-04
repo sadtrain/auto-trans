@@ -34,10 +34,10 @@ public class BotHelper {
 //        contactListCache.setGroupMemberListCacheEnabled(true); // 开启群成员列表缓存
 //        contactListCache.setSaveIntervalMillis(60000); // 可选设置有更新时的保存时间间隔, 默认 60 秒
 
-        botConfiguration.setProtocol(BotConfiguration.MiraiProtocol.MACOS);
+        botConfiguration.setProtocol(BotConfiguration.MiraiProtocol.ANDROID_PHONE);
 //        botConfiguration.setLoginSolver(LoginSolver.Companion.getSingleSolver());
-//        Bot myBot = instance.newBot(botNum, password, botConfiguration);
-        Bot myBot = instance.newBot(botNum, BotAuthorization.byQRCode(), botConfiguration);
+        Bot myBot = instance.newBot(botNum, password, botConfiguration);
+//        Bot myBot = instance.newBot(botNum, BotAuthorization.byQRCode(), botConfiguration);
         return myBot;
     }
 }
