@@ -67,4 +67,24 @@ public class AssignMessageResolverTest {
         String s = assignMessageResolver.handlerText(str);
         System.out.println(s);
     }
+    @Test
+    public void test3(){
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.scan("com.sadtrain.autotrans.mirai.resolver","com.sadtrain.autotrans.api");
+        context.refresh();
+        AssignMessageResolver assignMessageResolver = context.getBean(AssignMessageResolver.class);
+        String str = "4.9亓/双拖鞋！小神价\n" +
+                "---\n" +
+                "2件 任拍2件到手9.98亓！\n" +
+                "情侣款踩屎感防滑拖鞋2双\n" +
+                "￥SvT3dHoyfme￥/ CZ88 \n" +
+                "\n" +
+                "https://s.click.Taobao.com/8SMEZDu";
+        MessageChainBuilder newMassageBuilder = new MessageChainBuilder();
+        newMassageBuilder.append("28￥I17p2lJICHj￥ https://m.tb.cn/h.fHkdGPl?sm=2cb1f5  快抢最高22888元红包！");
+        MessageChain build = newMassageBuilder.build();
+
+        String s = assignMessageResolver.handlerText(str);
+        System.out.println(s);
+    }
 }

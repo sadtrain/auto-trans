@@ -31,7 +31,7 @@ public class GoodsConvertor {
         paraMap.put("appKey",appKey);
         paraMap.put("goodsId", tkl);
         paraMap.put("pid", "mm_50644486_2601550374_111953300012");
-        paraMap.put("version","v1.0.0");
+        paraMap.put("version","v1.3.1");
         String signStr = SignMD5Util.getSignStr(paraMap, appSecret);
         paraMap.put("sign", signStr);
         RestTemplate restTemplate = new RestTemplate();
