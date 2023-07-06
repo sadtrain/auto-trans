@@ -17,6 +17,8 @@ public class BotHelper {
     public static Bot newBot(Long botNum,String password){
         BotFactory.INSTANCE instance = BotFactory.INSTANCE;
         BotConfiguration botConfiguration = new BotConfiguration();
+
+        BotAuthorization botAuthorization = BotAuthorization.byQRCode();
         if(System.getProperties().getProperty("os.name").toUpperCase().contains("WINDOWS")){
             System.out.println(BotHelper.class.getClassLoader().getResource("").getPath());
             botConfiguration.setWorkingDir(new File(BotHelper.class.getClassLoader().getResource("").getPath()));

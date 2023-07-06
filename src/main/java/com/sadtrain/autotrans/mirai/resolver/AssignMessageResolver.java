@@ -13,25 +13,18 @@ import com.sadtrain.autotrans.api.response.DtkActivityLinkResponse;
 import com.sadtrain.autotrans.api.response.DtkGetPrivilegeLinkResponse;
 import com.sadtrain.autotrans.api.response.DtkParseContentResponse;
 import com.sadtrain.autotrans.api.response.DtkTwdToTwdResponse;
-import com.sadtrain.autotrans.api.response.base.BaseResponse;
-import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.event.events.MessageEvent;
-import net.mamoe.mirai.message.MessageReceipt;
 import net.mamoe.mirai.message.data.AtAll;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.PlainText;
 import net.mamoe.mirai.message.data.SingleMessage;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,12 +115,14 @@ public class AssignMessageResolver implements MessageResolver {
                     matcher.appendReplacement(sb0,dtkActivityLinkResponse.getTpwd());
                 } else {
                     logger.info("{} is a goods", group);
-                    DtkTwdToTwdResponse dtkTwdToTwdResponse = tklConvertor.convert(group);
-                    if (dtkTwdToTwdResponse == null) {
+                    String goodsId = convert.getGoodsId();
+                    DtkGetPrivilegeLinkResponse dtkGetPrivilegeLinkResponse = goodsConvertor.convert(goodsId);
+//                    DtkTwdToTwdResponse dtkTwdToTwdResponse = tklConvertor.convert(group);
+                    if (dtkGetPrivilegeLinkResponse == null) {
                         logger.error("convert failed{}", content);
                         throw new RuntimeException("convert failed");
                     }
-                    matcher.appendReplacement(sb0,dtkTwdToTwdResponse.getTpwd());
+                    matcher.appendReplacement(sb0,dtkGetPrivilegeLinkResponse.getTpwd());
                 }
 //                        System.out.println(matcher.group(1));
             }
@@ -136,19 +131,19 @@ public class AssignMessageResolver implements MessageResolver {
         matcher.appendTail(sb0);
         content = sb0.toString();
         Matcher sClickMatcher = sClickUrlpattern.matcher(content);
-        StringBuilder sclickSB = new StringBuilder();
+        StringBuilder sClickSB = new StringBuilder();
         while (sClickMatcher.find()) {
             String sclick = sClickMatcher.group(1);
             //sclick 只能转换商品的，618大促活动的不行
             DtkParseContentResponse response = tklExtractor.convert(sclick);
             if (response == null) {
                 //转换失败就尝试用活动去转
-//                DtkActivityLinkResponse myTKL = tbActivityConvertor.convert(activityId);
-//                if (myTKL == null) {
-//                    logger.error("convert failed{}", content);
-//                    throw new RuntimeException("convert failed");
-//                }
-//                content = content.replaceAll(sclick, myTKL.getLongTpwd());
+                DtkActivityLinkResponse myTKL = tbActivityConvertor.convert(sclick);
+                if (myTKL == null) {
+                    logger.error("convert failed{}", content);
+                    throw new RuntimeException("convert failed");
+                }
+                content = content.replaceAll(sclick, myTKL.getLongTpwd());
             } else {
                 String dataType = response.getDataType();
                 if (TKLExtractor.DATATYPE_ACTIVITY.equals(dataType)) {
@@ -157,7 +152,7 @@ public class AssignMessageResolver implements MessageResolver {
                         logger.error("convert failed{}", content);
                         throw new RuntimeException("convert failed");
                     }
-                    sClickMatcher.appendReplacement(sclickSB,myTKL.getLongTpwd());
+                    sClickMatcher.appendReplacement(sClickSB,myTKL.getLongTpwd());
 
                 } else {
                     String goodsId = response.getGoodsId();
@@ -166,12 +161,12 @@ public class AssignMessageResolver implements MessageResolver {
                         logger.error("convert failed{}", content);
                         throw new RuntimeException("convert failed");
                     }
-                    sClickMatcher.appendReplacement(sclickSB,convert.getShortUrl());
+                    sClickMatcher.appendReplacement(sClickSB,convert.getShortUrl());
                 }
             }
         }
-        sClickMatcher.appendTail(sclickSB);
-        content = sclickSB.toString();
+        sClickMatcher.appendTail(sClickSB);
+        content = sClickSB.toString();
 
         Matcher jdMatcher = jdUrlpattern.matcher(content);
         StringBuilder sbJD = new StringBuilder();
@@ -262,6 +257,27 @@ public class AssignMessageResolver implements MessageResolver {
         AssignMessageResolver.logger = logger;
     }
 
+    public static void setPattern(Pattern pattern) {
+        AssignMessageResolver.pattern = pattern;
+    }
+
+    public static void setJdUrlpattern(Pattern jdUrlpattern) {
+        AssignMessageResolver.jdUrlpattern = jdUrlpattern;
+    }
+
+    public static void setShortTbUrlpattern(Pattern shortTbUrlpattern) {
+        AssignMessageResolver.shortTbUrlpattern = shortTbUrlpattern;
+    }
+
+    public static void setsClickUrlpattern(Pattern sClickUrlpattern) {
+        AssignMessageResolver.sClickUrlpattern = sClickUrlpattern;
+    }
+
+    public static void setKuaiZhanUrlpattern(Pattern kuaiZhanUrlpattern) {
+        AssignMessageResolver.kuaiZhanUrlpattern = kuaiZhanUrlpattern;
+    }
+
+
     public void setTklConvertor(TKLConvertor tklConvertor) {
         this.tklConvertor = tklConvertor;
     }
@@ -288,25 +304,5 @@ public class AssignMessageResolver implements MessageResolver {
 
     public void setKuaiZhanConvertor(KuaiZhanConvertor kuaiZhanConvertor) {
         this.kuaiZhanConvertor = kuaiZhanConvertor;
-    }
-
-    public static void setPattern(Pattern pattern) {
-        AssignMessageResolver.pattern = pattern;
-    }
-
-    public static void setJdUrlpattern(Pattern jdUrlpattern) {
-        AssignMessageResolver.jdUrlpattern = jdUrlpattern;
-    }
-
-    public static void setShortTbUrlpattern(Pattern shortTbUrlpattern) {
-        AssignMessageResolver.shortTbUrlpattern = shortTbUrlpattern;
-    }
-
-    public static void setsClickUrlpattern(Pattern sClickUrlpattern) {
-        AssignMessageResolver.sClickUrlpattern = sClickUrlpattern;
-    }
-
-    public static void setKuaiZhanUrlpattern(Pattern kuaiZhanUrlpattern) {
-        AssignMessageResolver.kuaiZhanUrlpattern = kuaiZhanUrlpattern;
     }
 }
