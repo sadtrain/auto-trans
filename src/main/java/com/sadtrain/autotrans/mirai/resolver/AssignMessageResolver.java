@@ -1,5 +1,6 @@
 package com.sadtrain.autotrans.mirai.resolver;
 
+import com.alias.MessageConvertor;
 import com.alibaba.fastjson.JSON;
 import com.sadtrain.autotrans.api.GoodsConvertor;
 import com.sadtrain.autotrans.api.JDUrlConvertor;
@@ -73,7 +74,8 @@ public class AssignMessageResolver implements MessageResolver {
                 if(text.contains("淘宝+京东自助查券网站")){
                     return null;
                 }
-                String content = handlerText(text);
+                MessageConvertor messageConverter = new MessageConvertor();
+                String content = messageConverter.resolve(text);
                 if (content != null) {
                     newMassageBuilder.append(new PlainText(content));
                 }
@@ -84,6 +86,7 @@ public class AssignMessageResolver implements MessageResolver {
             }
         }
         MessageChain newMessage = newMassageBuilder.build();
+        //todo 同时上传到kafka
         return newMessage;
 
     }
