@@ -55,9 +55,9 @@ public class TKLConvertor {
         if(matcher.matches()){
             String tkl = matcher.group(1);
 //                        System.out.println(matcher.group(1));
-//            String myTKL = convertor.convert(tkl);
-//            assert myTKL != null;
-//            System.out.println(myTKL);
+            DtkTwdToTwdResponse convert = convertor.convert(tkl);
+
+            System.out.println(convert);
         }else{
 
         }
