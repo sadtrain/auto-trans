@@ -80,6 +80,8 @@ public class AssignMessageResolver implements MessageResolver {
                     newMassageBuilder.append(new PlainText(content));
                 }
             } else if (message instanceof Image) {
+                //todo message构造可能不像想象中那么简单
+                //微信发送图片只是本地。微信的图片和文本是分开的
                 newMassageBuilder.append(message);
             } else if (message instanceof AtAll) {
                 newMassageBuilder.append(message);
