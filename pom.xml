@@ -43,12 +43,21 @@
             <groupId>net.mamoe</groupId>
             <artifactId>mirai-core-jvm</artifactId>
             <version>2.15.0</version>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>kotlinx-coroutines-core-jvm</artifactId>-->
-<!--                    <groupId>org.jetbrains.kotlinx</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
+            <exclusions>
+                <exclusion>
+                    <artifactId>kotlinx-coroutines-core-jvm</artifactId>
+                    <groupId>org.jetbrains.kotlinx</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>kotlinx-coroutines-core-jvm</groupId>
+                    <artifactId>kotlinx-coroutines-jdk8</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.asynchttpclient</groupId>
+            <artifactId>async-http-client</artifactId>
+            <version>2.12.3</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.apache.logging.log4j</groupId>-->
@@ -56,6 +65,11 @@
 <!--            <version>2.19.0</version>-->
 <!--            <scope>provided</scope>-->
 <!--        </dependency>-->
+        <dependency>
+            <artifactId>kotlinx-coroutines-core-jvm</artifactId>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <version>1.6.4</version>
+        </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
