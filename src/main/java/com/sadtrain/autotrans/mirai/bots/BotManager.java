@@ -128,7 +128,6 @@ public class BotManager implements LifeCycle {
 
     public void removeListener(Integer listenerId){
         Listener listener = listenerMap.get(listenerId);
-        listener.complete();
         listeners.remove(listener);
         listenerMap.remove(listenerId);
         for (Map.Entry<Long, List<Listener>> entry : listenerBotMap.entrySet()) {
@@ -179,7 +178,6 @@ public class BotManager implements LifeCycle {
 
     public void removeListener(ListenerConfig listenerConfig){
         Listener listener = listenerMap.get(listenerConfig);
-        listener.complete();
         listenerMap.remove(listenerConfig);
         listeners.remove(listener);
     }

@@ -1,6 +1,5 @@
 package com.sadtrain.autotrans.mirai.bots;
 
-import application.miraisignhandler.MiraiSignHandler;
 import com.sadtrain.autotrans.web.request.AddBotRequest;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
@@ -18,7 +17,6 @@ public class BotHelper {
     private static Logger logger = LoggerFactory.getLogger(MyBot.class);
     public static Bot newBot(Long botNum,String password){
         FixProtocolVersion.update(); //先执行FixProtocolVersion的修复，我的插件才能获取正确的协议版本
-        MiraiSignHandler.register();
         BotFactory.INSTANCE instance = BotFactory.INSTANCE;
         BotConfiguration botConfiguration = new BotConfiguration();
 
