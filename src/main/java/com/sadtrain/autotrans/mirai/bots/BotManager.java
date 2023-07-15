@@ -14,6 +14,7 @@ import com.sadtrain.autotrans.mirai.resolver.MessageResolver;
 import io.swagger.models.auth.In;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Group;
+import net.mamoe.mirai.event.ConcurrencyKind;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.Listener;
 import net.mamoe.mirai.event.events.BotEvent;
