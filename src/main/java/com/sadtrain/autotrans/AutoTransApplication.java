@@ -10,6 +10,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class AutoTransApplication {
 
     public static void main(String[] args) {
+        String property = System.getProperty("os.name");
+        if (property.contains("Windows")) {
+            System.setProperty("osbriefname", "windows");
+        } else {
+            System.setProperty("osbriefname", "default");
+        }
         SpringApplication.run(AutoTransApplication.class, args);
     }
 }
