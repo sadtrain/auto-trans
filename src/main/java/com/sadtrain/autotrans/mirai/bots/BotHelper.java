@@ -2,6 +2,7 @@ package com.sadtrain.autotrans.mirai.bots;
 
 //import application.miraisignhandler.MiraiSignHandler;
 //import application.miraisignhandler.SignEncryptService;
+import com.sadtrain.autotrans.AutoTransApplication;
 import com.sadtrain.autotrans.web.request.AddBotRequest;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
@@ -45,8 +46,9 @@ public class BotHelper {
 
         BotAuthorization botAuthorization = BotAuthorization.byQRCode();
         if(System.getProperties().getProperty("os.name").toUpperCase().contains("WINDOWS")){
-            System.out.println(BotHelper.class.getClassLoader().getResource("").getPath());
-            botConfiguration.setWorkingDir(new File(BotHelper.class.getClassLoader().getResource("").getPath()));
+            String jarPath = getJarPath();
+            System.out.println(getJarPath());
+            botConfiguration.setWorkingDir(new File(jarPath));
         }else{
             File file = new File("/Users/zgs/opt/mirai/work");
             file.mkdirs();
@@ -67,5 +69,10 @@ public class BotHelper {
         Bot myBot = instance.newBot(botNum, password, botConfiguration);
 //        Bot myBot = instance.newBot(botNum, BotAuthorization.byQRCode(), botConfiguration);
         return myBot;
+    }
+
+    public static String getJarPath() {
+        String jarPath = AutoTransApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        return new File(jarPath).getParent();
     }
 }
