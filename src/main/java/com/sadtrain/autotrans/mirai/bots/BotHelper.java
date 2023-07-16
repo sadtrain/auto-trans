@@ -17,6 +17,8 @@ import xyz.cssxsh.mirai.tool.FixProtocolVersion;
 import xyz.cssxsh.mirai.tool.KFCFactory;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
 import java.util.ServiceLoader;
 
 public class BotHelper {
@@ -71,8 +73,17 @@ public class BotHelper {
         return myBot;
     }
 
+    public static void main(String[] args) {
+        System.out.println(getJarPath());
+    }
     public static String getJarPath() {
-        String jarPath = AutoTransApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        return new File(jarPath).getParent();
+        CodeSource codeSource = AutoTransApplication.class.getProtectionDomain().getCodeSource();
+        File jarFile = null;
+        try {
+            jarFile = new File(codeSource.getLocation().toURI().getPath());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        return jarFile.getParent();
     }
 }
