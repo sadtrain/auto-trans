@@ -77,13 +77,6 @@ public class BotHelper {
         System.out.println(getJarPath());
     }
     public static String getJarPath() {
-        CodeSource codeSource = AutoTransApplication.class.getProtectionDomain().getCodeSource();
-        File jarFile = null;
-        try {
-            jarFile = new File(codeSource.getLocation().toURI().getPath());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        return jarFile.getParent();
+        return System.getProperty("user.dir");
     }
 }
