@@ -23,6 +23,7 @@ public class BotHelper {
     private static Logger logger = LoggerFactory.getLogger(MyBot.class);
     public static Bot newBot(Long botNum,String password){
 //        FixProtocolVersion.sync(); //先执行FixProtocolVersion的修复，我的插件才能获取正确的协议版本
+        FixProtocolVersion.sync(BotConfiguration.MiraiProtocol.ANDROID_PHONE);
         ServiceLoader<EncryptService> signEncryptServices = ServiceLoader.load(EncryptService.class);
         for (EncryptService signEncryptService : signEncryptServices) {
             System.out.println(signEncryptService.getClass().getName());
@@ -61,6 +62,7 @@ public class BotHelper {
 //        contactListCache.setSaveIntervalMillis(60000); // 可选设置有更新时的保存时间间隔, 默认 60 秒
 
         botConfiguration.setProtocol(BotConfiguration.MiraiProtocol.ANDROID_PHONE);
+        FixProtocolVersion.sync(BotConfiguration.MiraiProtocol.ANDROID_PHONE); //
 //        botConfiguration.setLoginSolver(LoginSolver.Companion.getSingleSolver());
         Bot myBot = instance.newBot(botNum, password, botConfiguration);
 //        Bot myBot = instance.newBot(botNum, BotAuthorization.byQRCode(), botConfiguration);

@@ -184,7 +184,7 @@
             <artifactId>fix-protocol</artifactId>    <!--自定义-->
             <version>1.0</version> <!--自定义-->
             <scope>system</scope> <!--system，类似provided，需要显式提供依赖的jar以后，Maven就不会在Repository中查找它-->
-            <systemPath>${basedir}/lib/fix-protocol-version-1.9.4.mirai2.jar</systemPath> <!--项目根目录下的lib文件夹下，也可以是本机其它目录的绝对路径-->
+            <systemPath>${basedir}/lib/fix-protocol-version-1.9.5.mirai2.jar</systemPath> <!--项目根目录下的lib文件夹下，也可以是本机其它目录的绝对路径-->
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.alias</groupId>  &lt;!&ndash;自定义&ndash;&gt;-->
