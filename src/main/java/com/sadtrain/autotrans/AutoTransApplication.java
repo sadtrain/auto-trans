@@ -10,6 +10,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class AutoTransApplication {
 
     public static void main(String[] args) {
+        System.setProperty("console.encoding", "UTF-8");
         String property = System.getProperty("os.name");
         if (property.contains("Windows")) {
             System.setProperty("osbriefname", "windows");
