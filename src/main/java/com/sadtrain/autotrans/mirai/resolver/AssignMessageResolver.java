@@ -1,6 +1,9 @@
 package com.sadtrain.autotrans.mirai.resolver;
 
 import com.alias.MessageConvertor;
+import com.alias.common.message.ImageMessage;
+import com.alias.common.message.Message;
+import com.alias.common.message.TextMessage;
 import com.alibaba.fastjson.JSON;
 import com.sadtrain.autotrans.api.GoodsConvertor;
 import com.sadtrain.autotrans.api.JDUrlConvertor;
@@ -26,6 +29,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,6 +73,8 @@ public class AssignMessageResolver implements MessageResolver {
     public MessageChain resolve(MessageEvent event) {
         MessageChain messageChain = event.getMessage();
         MessageChainBuilder newMassageBuilder = new MessageChainBuilder();
+        List<Message> textMessages = new ArrayList<>();
+        List<Message> imageMessages = new ArrayList<>();
         for (SingleMessage message : messageChain) {
             if (message instanceof PlainText) {
                 String text = ((PlainText) message).getContent();
@@ -79,10 +86,18 @@ public class AssignMessageResolver implements MessageResolver {
                 if (content != null) {
                     newMassageBuilder.append(new PlainText(content));
                 }
+                TextMessage textMessage = new TextMessage();
+                textMessage.setText(content);
+                textMessages.add(textMessage);
             } else if (message instanceof Image) {
                 //todo message构造可能不像想象中那么简单
                 //微信发送图片只是本地。微信的图片和文本是分开的
                 newMassageBuilder.append(message);
+                ImageMessage imageMessage = new ImageMessage();
+                String url = Image.queryUrl((Image) message);
+                //download
+                byte[] bytes = download(url);
+                imageMessage.setImageContent(((Image) message).queryUrl());
             } else if (message instanceof AtAll) {
                 newMassageBuilder.append(message);
             }
@@ -90,6 +105,11 @@ public class AssignMessageResolver implements MessageResolver {
         MessageChain newMessage = newMassageBuilder.build();
         //todo 同时上传到kafka
         return newMessage;
+
+    }
+
+    private byte[] download(String url) {
+        //todo
 
     }
 
