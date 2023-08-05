@@ -3,6 +3,7 @@ package com.sadtrain.autotrans.mirai.resolver;
 import com.alias.MessageConvertor;
 import com.alias.common.message.ImageMessage;
 import com.alias.common.message.Message;
+import com.alias.common.message.MessageEntity;
 import com.alias.common.message.TextMessage;
 import com.alibaba.fastjson.JSON;
 import com.sadtrain.autotrans.api.GoodsConvertor;
@@ -17,6 +18,7 @@ import com.sadtrain.autotrans.api.response.DtkActivityLinkResponse;
 import com.sadtrain.autotrans.api.response.DtkGetPrivilegeLinkResponse;
 import com.sadtrain.autotrans.api.response.DtkParseContentResponse;
 import com.sadtrain.autotrans.api.response.DtkTwdToTwdResponse;
+import com.sadtrain.autotrans.kafka.MessageCenter;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.AtAll;
 import net.mamoe.mirai.message.data.Image;
@@ -24,11 +26,15 @@ import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.PlainText;
 import net.mamoe.mirai.message.data.SingleMessage;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -97,20 +103,59 @@ public class AssignMessageResolver implements MessageResolver {
                 String url = Image.queryUrl((Image) message);
                 //download
                 byte[] bytes = download(url);
-                imageMessage.setImageContent(((Image) message).queryUrl());
+                imageMessage.setImageContent(bytes);
+                imageMessages.add(imageMessage);
             } else if (message instanceof AtAll) {
                 newMassageBuilder.append(message);
             }
         }
+        MessageEntity messageEntity = new MessageEntity();
+        messageEntity.getMessageList().addAll(textMessages);
+        messageEntity.getMessageList().addAll(imageMessages);
+        MessageCenter.sendMessage(messageEntity);
+
         MessageChain newMessage = newMassageBuilder.build();
-        //todo 同时上传到kafka
         return newMessage;
 
     }
 
-    private byte[] download(String url) {
-        //todo
+    private byte[] download(String imgUrl) {
+        URL url = null;
+        try {
+            url = new URL(imgUrl);
+            try (InputStream inputStream = url.openStream(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                IOUtils.copy(inputStream, outputStream);
+                return outputStream.toByteArray();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public static void main(String[] args) {
+        System.out.println(System.getProperty("os.name"));
+        String imgUrl = "https://freepngimg.com/thumb/anime/113892-kuriyama-mirai-download-free-image.png";
+        URL url = null;
+        try {
+            url = new URL(imgUrl);
+            try (InputStream inputStream = url.openStream(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                String localPath = "/Users/bytedance/IdeaProjects/auto-trans/lib/1.png";
+                File file = new File(localPath);
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                IOUtils.copy(inputStream, outputStream);
+//                try (FileOutputStream fos = new FileOutputStream(localPath)) {
+//                    IOUtils.copy(inputStream, fos);
+//                }
+                byte[] byteArray = outputStream.toByteArray();
+                try (FileOutputStream fos = new FileOutputStream(localPath)) {
+                    fos.write(byteArray);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String handlerText(String content) {

@@ -15,6 +15,8 @@ public class AutoTransApplication {
         String property = System.getProperty("os.name");
         if (property.contains("Windows")) {
             System.setProperty("osbriefname", "windows");
+        } else if (property.contains("Mac")) {
+            System.setProperty("osbriefname", "mac");
         } else {
             System.setProperty("osbriefname", "default");
         }
