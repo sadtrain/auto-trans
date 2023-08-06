@@ -113,8 +113,10 @@ public class AssignMessageResolver implements MessageResolver {
             }
         }
         MessageEntity messageEntity = new MessageEntity();
-        messageEntity.getMessageList().addAll(textMessages);
-        messageEntity.getMessageList().addAll(imageMessages);
+        List<Message> messages = new ArrayList<>();
+        messages.addAll(imageMessages);
+        messages.addAll(textMessages);
+        messageEntity.setMessageList(messages);
         MessageCenter.sendMessage(messageEntity);
 
         MessageChain newMessage = newMassageBuilder.build();
