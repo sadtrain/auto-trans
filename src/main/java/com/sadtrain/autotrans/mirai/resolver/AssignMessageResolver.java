@@ -36,6 +36,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -103,7 +104,9 @@ public class AssignMessageResolver implements MessageResolver {
                 String url = Image.queryUrl((Image) message);
                 //download
                 byte[] bytes = download(url);
-                imageMessage.setImageContent(bytes);
+                //转为base64
+                String base64 = Base64.getEncoder().encodeToString(bytes);
+                imageMessage.setImageContent(base64);
                 imageMessages.add(imageMessage);
             } else if (message instanceof AtAll) {
                 newMassageBuilder.append(message);
