@@ -26,6 +26,7 @@ import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.PlainText;
 import net.mamoe.mirai.message.data.SingleMessage;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,12 +88,12 @@ public class AssignMessageResolver implements MessageResolver {
                 }
                 MessageConvertor messageConverter = new MessageConvertor();
                 String content = messageConverter.resolve(text);
-                if (content != null) {
+                if (StringUtils.isNotEmpty(content)) {
                     newMassageBuilder.append(new PlainText(content));
+                    TextMessage textMessage = new TextMessage();
+                    textMessage.setText(content);
+                    textMessages.add(textMessage);
                 }
-                TextMessage textMessage = new TextMessage();
-                textMessage.setText(content);
-                textMessages.add(textMessage);
             } else if (message instanceof Image) {
                 //todo message构造可能不像想象中那么简单
                 //微信发送图片只是本地。微信的图片和文本是分开的
@@ -122,7 +123,7 @@ public class AssignMessageResolver implements MessageResolver {
     }
 
     private byte[] download(String imgUrl) {
-        URL url = null;
+        URL url;
         try {
             url = new URL(imgUrl);
             try (InputStream inputStream = url.openStream(); ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
