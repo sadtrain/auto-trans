@@ -1,15 +1,14 @@
 package com.sadtrain.autotrans.mirai.resolver;
 
 import com.alias.MessageConvertor;
+import com.alias.api.ShortUrlConvertor;
 import com.alias.common.message.ImageMessage;
 import com.alias.common.message.Message;
 import com.alias.common.message.MessageEntity;
 import com.alias.common.message.TextMessage;
-import com.alibaba.fastjson.JSON;
 import com.sadtrain.autotrans.api.GoodsConvertor;
 import com.sadtrain.autotrans.api.JDUrlConvertor;
 import com.sadtrain.autotrans.api.KuaiZhanConvertor;
-import com.sadtrain.autotrans.api.ShortUrlConvertor;
 import com.sadtrain.autotrans.api.SignMD5Util;
 import com.sadtrain.autotrans.api.TBActivityConvertor;
 import com.sadtrain.autotrans.api.TKLConvertor;
@@ -54,8 +53,6 @@ public class AssignMessageResolver implements MessageResolver {
     private TBActivityConvertor tbActivityConvertor;
     @Autowired
     private GoodsConvertor goodsConvertor;
-    @Autowired
-    private ShortUrlConvertor shortUrlConvertor;
     @Autowired
     private KuaiZhanConvertor kuaiZhanConvertor;
     static Pattern pattern = Pattern.compile("([￥(]\\w{8,12}[￥)])");
@@ -262,14 +259,14 @@ public class AssignMessageResolver implements MessageResolver {
             String tkl = tbUrl.group(1);
             DtkParseContentResponse response = tklExtractor.convert(tkl);
             if (response == null) {
-                //todo 转成短链接
-                String dtkActivityLinkResponse = shortUrlConvertor.convert(tkl);
-                if (dtkActivityLinkResponse == null) {
-                    logger.error("convert failed{}", content);
-                    throw new RuntimeException("convert failed");
-                }
-                String longTpwd = dtkActivityLinkResponse;
-                tbUrl.appendReplacement(sb1,longTpwd);
+//                //todo 转成短链接
+//                String dtkActivityLinkResponse = shortUrlConvertor.convert(tkl);
+//                if (dtkActivityLinkResponse == null) {
+//                    logger.error("convert failed{}", content);
+//                    throw new RuntimeException("convert failed");
+//                }
+//                String longTpwd = dtkActivityLinkResponse;
+//                tbUrl.appendReplacement(sb1,longTpwd);
             } else {
                 String dataType = response.getDataType();
                 if (TKLExtractor.DATATYPE_ACTIVITY.equals(dataType)) {
@@ -371,10 +368,6 @@ public class AssignMessageResolver implements MessageResolver {
 
     public void setGoodsConvertor(GoodsConvertor goodsConvertor) {
         this.goodsConvertor = goodsConvertor;
-    }
-
-    public void setShortUrlConvertor(ShortUrlConvertor shortUrlConvertor) {
-        this.shortUrlConvertor = shortUrlConvertor;
     }
 
     public void setKuaiZhanConvertor(KuaiZhanConvertor kuaiZhanConvertor) {

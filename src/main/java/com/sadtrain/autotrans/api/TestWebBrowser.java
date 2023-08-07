@@ -19,9 +19,7 @@ import com.microsoft.playwright.Playwright;
 import com.sadtrain.autotrans.api.response.DtkGetPrivilegeLinkResponse;
 import com.sadtrain.autotrans.api.response.DtkParseContentResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.w3c.dom.NamedNodeMap;
+
 import org.w3c.dom.Node;
 
 import java.io.IOException;

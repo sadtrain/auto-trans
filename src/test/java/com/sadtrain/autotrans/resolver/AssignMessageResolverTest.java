@@ -1,6 +1,5 @@
 package com.sadtrain.autotrans.resolver;
 
-import com.sadtrain.autotrans.api.ShortUrlConvertor;
 import com.sadtrain.autotrans.api.TKLConvertor;
 import com.sadtrain.autotrans.api.TKLExtractor;
 import com.sadtrain.autotrans.mirai.resolver.AssignMessageResolver;
@@ -13,7 +12,6 @@ public class AssignMessageResolverTest {
         AssignMessageResolver resolver = new AssignMessageResolver();
         resolver.setTklConvertor(new TKLConvertor());
         resolver.setTklExtractor(new TKLExtractor());
-        resolver.setShortUrlConvertor(new ShortUrlConvertor());
         String str = "39亓 强生旗下&安视优\n" +
                 "安视优舒日隐形日抛10片\n" +
                 "https://m.Tb.cn/h.Ud3PSC0 \n" +
