@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MessageCenter {
 
-    private static final String URL = "/sendMsg?topic=";
+    private static final String URL = "/msg/sendMsg?topic=";
     private static final String topic = "mirai_qq_msg";
 
     public static void sendMessage(MessageEntity message){
