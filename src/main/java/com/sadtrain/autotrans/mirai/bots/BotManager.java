@@ -114,7 +114,7 @@ public class BotManager implements LifeCycle {
                             try {
                                 group.sendMessage(messageChain);
                             }catch (Throwable e){
-                                logger.error("send failed");
+                                logger.error("send failed", e);
                             }
                         }
                     }
