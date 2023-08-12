@@ -26,7 +26,7 @@ public class BotHelper {
     private static Logger logger = LoggerFactory.getLogger(MyBot.class);
     public static Bot newBot(Long botNum,String password){
 //        FixProtocolVersion.sync(); //先执行FixProtocolVersion的修复，我的插件才能获取正确的协议版本
-        FixProtocolVersion.sync(BotConfiguration.MiraiProtocol.ANDROID_PHONE);
+        FixProtocolVersion.load(BotConfiguration.MiraiProtocol.ANDROID_PHONE);
         ServiceLoader<EncryptService> signEncryptServices = ServiceLoader.load(EncryptService.class);
         for (EncryptService signEncryptService : signEncryptServices) {
             System.out.println(signEncryptService.getClass().getName());
