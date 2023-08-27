@@ -38,6 +38,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,6 +57,8 @@ public class AssignMessageResolver implements MessageResolver {
     private GoodsConvertor goodsConvertor;
     @Autowired
     private KuaiZhanConvertor kuaiZhanConvertor;
+    @Autowired
+    private ExecutorService defaultExecutorService;
     static Pattern pattern = Pattern.compile("([￥(]\\w{8,12}[￥)])");
     static Pattern jdUrlpattern = Pattern.compile("(https\\:\\/\\/(?:item\\.m|u)\\.jd\\.com\\/[0-9A-Za-z._?=&/]+)");
 //    static Pattern jdGoodsUrlpattern = Pattern.compile("(https\\:\\/\\/(?:item|coupon)\\.m\\.jd\\.com\\/[0-9A-Za-z._?=&]+)");
@@ -115,7 +118,9 @@ public class AssignMessageResolver implements MessageResolver {
         messages.addAll(imageMessages);
         messages.addAll(textMessages);
         messageEntity.setMessageList(messages);
-        MessageCenter.sendMessage(messageEntity);
+        defaultExecutorService.execute(() -> {
+            MessageCenter.sendMessage(messageEntity);
+        });
 
         MessageChain newMessage = newMassageBuilder.build();
         return newMessage;
